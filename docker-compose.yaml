@@ -1,0 +1,40 @@
+services:
+  server:
+    build: ./server
+    container_name: notes-server
+    environment:
+      - NODE_ENV=production
+      # se il tuo server usa una variabile per il path db, meglio fissarla
+      - SQLITE_PATH=/data/notes.db
+    volumes:
+      - server_data:/data
+    expose:
+      - "5174"
+    restart: unless-stopped
+
+  client:
+    build: ./client
+    container_name: notes-client
+    expose:
+      - "80"
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    container_name: notes-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    depends_on:
+      - client
+      - server
+
+volumes:
+  server_data:
+  caddy_data:
+  caddy_config:

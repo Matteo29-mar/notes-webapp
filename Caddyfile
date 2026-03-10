@@ -1,0 +1,13 @@
+myascari.com {
+  encode gzip
+
+  # API
+  handle_path /api/* {
+    reverse_proxy server:5174
+  }
+
+  # Frontend
+  handle {
+    reverse_proxy client:80
+  }
+}
