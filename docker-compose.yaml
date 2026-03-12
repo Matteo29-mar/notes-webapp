@@ -3,9 +3,9 @@ services:
     build: ./server
     container_name: notes-server
     environment:
-      - NODE_ENV=production
-      # se il tuo server usa una variabile per il path db, meglio fissarla
-      - SQLITE_PATH=/data/notes.db
+      NODE_ENV: production
+      PORT: 5174
+      SQLITE_PATH: /data/notes.db
     volumes:
       - server_data:/data
     expose:
@@ -18,6 +18,8 @@ services:
     expose:
       - "80"
     restart: unless-stopped
+    depends_on:
+      - server
 
   caddy:
     image: caddy:2
