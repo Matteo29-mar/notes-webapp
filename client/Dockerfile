@@ -7,8 +7,8 @@ RUN npm ci
 
 COPY . .
 
-# Fix possibile problema permessi su tsc
-RUN chmod +x node_modules/.bin/tsc || true
+# sistema i permessi dei binari npm
+RUN chmod -R +x node_modules/.bin
 
 RUN npx tsc -b && npx vite build
 
